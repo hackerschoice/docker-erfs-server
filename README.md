@@ -40,7 +40,7 @@ $ echo "Hello World" >~/thc/rfs/cleartext-file.txt
 
 Create an encrypted volume. Encryption happens locally. The encrypted data is then send via ssh to the server (double encrypted):
 ```
-$ mkdir ~/thc/sec
+$ mkdir -p ~/thc/sec
 $ SEC=`dd if=/dev/urandom bs=1 count=32 2>/dev/null | openssl base64 | sed 's/[^a-zA-Z0-9]//g' | head -n1 | cut -c1-16`
 $ echo "Use this password when asked: sec${SEC}"
 $ encfs --standard ~/thc/rfs/encrypted ~/thc/sec
