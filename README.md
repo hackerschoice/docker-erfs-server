@@ -15,6 +15,7 @@ $ docker build -t thc-rfs-server github.com/SkyperTHC/thc-rfs-server
 
 Running the server:
 ```
+$ mkdir -p ~/thc-rfs
 $ docker run -it -p 2222:22 --log-drive=none -v ~/thc-rfs:/mnt/rfc thc-rfs-server
 ```
 
