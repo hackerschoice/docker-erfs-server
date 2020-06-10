@@ -2,9 +2,9 @@
 
 **NOTE**: You are in the wrong place. To use THC's 'Encrypted Remote File System' please go to [hackerschoice/thc-rfs-client](https://github.com/hackerschoice/thc-rfs-client)
 
-This is the server side for running an 'Encrypted Remote File System'. This is only needed if you decide to run your own server instead of using rfs.thc.org.
+This is the server side to run an 'Encrypted Remote File System'. This is only needed if you decide to run your own server instead of using rfs.thc.org.
 
-The server software runs as an isolated docker instance. 
+The server software runs as an isolated docker instance. The example assumes 127.0.13.37 as the server's IP and port 2222 is used for testing.
 
 ---
 **Installing the server software on the server**
@@ -23,13 +23,13 @@ $ docker run -it -p 2222:22 --log-drive=none -v ~/thc-rfs:/mnt/rfc thc-rfs-serve
 
 Retrieve a new RFS-SECRET:
 ```
-$ ssh -p 2222 rfs-init@rfs.thc.org
+$ ssh -p 2222 rfs-init@127.0.13.37
 ```
 
 Write down the RFS-SECRET. Keep this RFS-SECRET *secret* unless you intentionally wish to share access to the remote files. Mount the Remote File Share via SSH:
 ```
 $ mkdir -p ~/thc/rfs
-$ sshfs -o allow_other,default_permissions,IdentityFile=~/thc/etc/id_rsa-rfs <SECRET>@rfs.thc.org:rw ~/thc/rfs
+$ sshfs -p 2222 -o allow_other,default_permissions,IdentityFile=~/thc/etc/id_rsa-rfs <SECRET>@127.0.13.37:rw ~/thc/rfs
 ```
 
 Test write some data to the Remote File System directory.
