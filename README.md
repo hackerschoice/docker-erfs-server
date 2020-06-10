@@ -1,6 +1,6 @@
 # docker-thc-rfs-server
 
-**NOTE**: You are in the wrong place. To use THC's 'Encrypted Remote File System' please go to [SkyperTHC/thc-rfs-client](https://github.com/SkyperTHC/thc-rfs-client)
+**NOTE**: You are in the wrong place. To use THC's 'Encrypted Remote File System' please go to [hackerschoice/thc-rfs-client](https://github.com/hackerschoice/thc-rfs-client)
 
 This is the server side for running an 'Encrypted Remote File System'. This is only needed if you decide to run your own server instead of using rfs.thc.org.
 
