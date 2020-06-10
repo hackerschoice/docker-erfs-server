@@ -1,0 +1,34 @@
+#! /bin/bash
+
+
+ROOT_DIR="/mnt/rfs"
+FIFO_FILE="/tmp/thc-ipc.fifo"
+
+rm -rf "${FIFO_FILE}"
+mkfifo "${FIFO_FILE}"
+chgrp rfs-init "${FIFO_FILE}"
+chmod 770 "${FIFO_FILE}"
+
+while :; do
+	read line <"${FIFO_FILE}"
+	# This is already sanitized by rfssh but cant be to careful...
+	RFS_SEC=`echo "${line}" | sed 's/[^a-zA-Z0-9]//g'`
+	if [ ${#RFS_SEC} -ne 16 ]; then
+	        continue
+	fi
+
+	echo "`date` New user rfs-${RFS_SEC}"
+	RFS_DIR="${ROOT_DIR}/data/dir-rfs-${RFS_SEC}"
+	useradd rfs-${RFS_SEC} -NM -d /home/rfs-init -g rfsusergroup -s /usr/sbin/nologin
+
+	# useradd does not follow symb links so we have to it manually
+	tail -n1 /etc/passwd >>"${ROOT_DIR}/passwd"
+	tail -n1 /etc/shadow >>"${ROOT_DIR}/shadow"
+
+	umask 077
+	mkdir "${RFS_DIR}"
+	mkdir "${RFS_DIR}/rw"
+	mkdir "${RFS_DIR}/rw/encrypted"
+	chown -R "rfs-${RFS_SEC}" "${RFS_DIR}/rw"
+done
+
