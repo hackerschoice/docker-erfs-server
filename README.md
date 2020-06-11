@@ -10,7 +10,7 @@ The server software runs as an isolated docker instance. The example assumes 127
 **Installing the server software on the server**
 
 ```
-$ docker build -t thc-rfs-server github.com/hackerchoice/docker-thc-rfs-server
+$ docker build -t thc-rfs-server github.com/hackerschoice/docker-thc-rfs-server
 ```
 
 Running the server:
