@@ -26,6 +26,7 @@ cp id_rsa-rfs.pub "${RFS_HOME_DIR}/.ssh/authorized_keys"
 groupadd rfsusergroup
 
 echo "AcceptEnv THC_RFS_SECRET" >>/etc/ssh/sshd_config
+echo "AcceptEnv THC_SSH_PASSWORD" >>/etc/ssh/sshd_config
 echo "
 AllowTcpForwarding no
 X11Forwarding no
