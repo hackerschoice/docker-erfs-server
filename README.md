@@ -25,7 +25,7 @@ $ docker run -it -p 2222:22 --log-drive=none -v ~/thc-rfs:/mnt/rfs thc-rfs-serve
 See [hackerschoice/thc-rfs-client](https://github.com/hackerschoice/thc-rfs-client)
 
 ```
-$ export THC_RFS_SERVER=127.0.0.1
+$ export THC_RFS_SERVER=127.0.13.37
 $ export THC_RFS_PORT=2222
 $ ./thc-rfs init
 ```
