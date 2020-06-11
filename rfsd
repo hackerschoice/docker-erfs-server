@@ -23,7 +23,7 @@ while :; do
 
 	echo "`date` New user rfs-${RFS_SEC} / ${SSH_PAS}"
 	RFS_DIR="${ROOT_DIR}/data/dir-rfs-${RFS_SEC}"
-	useradd "rfs-${RFS_SEC}" -NM -d /home/rfs-init -g rfsusergroup -s /usr/sbin/nologin
+	useradd "rfs-${RFS_SEC}" -NM -d /dev/null -g rfsusergroup -s /usr/sbin/nologin
 	echo -e "${SSH_PAS}\n${SSH_PAS}" | passwd -q "rfs-${RFS_SEC}" 2>/dev/null
 	# useradd does not follow symb links so we have to it manually
 	tail -n1 /etc/passwd >>"${ROOT_DIR}/passwd"
