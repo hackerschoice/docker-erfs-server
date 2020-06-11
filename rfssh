@@ -1,20 +1,27 @@
 #! /bin/bash
 
-# Sanitize and check user's THC_RFS_SECRET
+# this is executed (shell) after rfs-init user has been authenticated by sshd
 
 ROOT_DIR="/mnt/rfs"
 FIFO_FILE="/tmp/thc-ipc.fifo"
 
 if [ ! -p "${FIFO_FILE}" ]; then
+	sleep 1
 	echo "Remote system is not yet ready ..Please try again later"
 	sleep 5
 	exit -1
 fi
 
-RFS_SEC=`dd if=/dev/urandom bs=1 count=32 2>/dev/null | openssl base64 | sed 's/[^a-zA-Z0-9]//g' | head -n1 | cut -c1-16`
-#RFS_SEC=`echo "${THC_RFS_SECRET}" | sed 's/[^a-zA-Z0-9]//g'`
+#RFS_SEC=`dd if=/dev/urandom bs=1 count=32 2>/dev/null | openssl base64 | sed 's/[^a-zA-Z0-9]//g' | head -n1 | cut -c1-16`
+RFS_SEC=`echo "${THC_RFS_SECRET}" | sed 's/[^a-zA-Z0-9]//g'`
+SSH_PAS=`echo "${THC_SSH_PASSWORD}" | sed 's/[^a-zA-Z0-9]//g'`
 if [ ${#RFS_SEC} -ne 16 ]; then
-        echo "BAD THC_RFS_SECRET"
+        echo "Server: BAD THC_RFS_SECRET"
+	exit -1
+fi
+
+if [ ${#SSH_PAS} -ne 16 ]; then
+	echo "Server: BAD SSH PASSWORD"
 	exit -1
 fi
 
@@ -22,9 +29,9 @@ RFS_DIR="${ROOT_DIR}/data/dir-rfs-${RFS_SEC}"
 
 if [ ! -d "${RFS_DIR}" ]; then
 	# Throttle it a bit...
-	echo "Creating a new Remote File Share...."
-	sleep 5
-	echo "${RFS_SEC}" >>"${FIFO_FILE}"
+	echo "Server: Creating a new Remote File Share...."
+	sleep 1
+	echo "${RFS_SEC} ${SSH_PAS}" >>"${FIFO_FILE}"
 
 	while :; do
 		if [ -d "${RFS_DIR}" ]; then
@@ -33,20 +40,4 @@ if [ ! -d "${RFS_DIR}" ]; then
 		sleep 1
 	done
 fi
-
-echo "
-SUCCESS! Your SECRET key to access the Remote Share is:
-
-                 rfs-${RFS_SEC}
-
-Mount the Remote Share:
-
-    $ mkdir -p ~/thc/rfs
-    $ sshfs -o allow_other,default_permissions,IdentityFile=~/thc/etc/id_rsa-rfs rfs-${RFS_SEC}@rfs.thc.org:rw ~/thc/rfs
-
-Start using encryption:
-
-    $ mkdir ~/thc/sec
-    $ encfs --standard ~/thc/rfs/encrypted ~/thc/sec
-"
-
+#echo "SUCCESS!"

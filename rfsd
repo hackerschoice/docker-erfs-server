@@ -12,15 +12,19 @@ chmod 770 "${FIFO_FILE}"
 while :; do
 	read line <"${FIFO_FILE}"
 	# This is already sanitized by rfssh but cant be to careful...
-	RFS_SEC=`echo "${line}" | sed 's/[^a-zA-Z0-9]//g'`
+	RFS_SEC=`echo "${line}" | cut -c1-16 | sed 's/[^a-zA-Z0-9]//g'`
+	SSH_PAS=`echo "${line}" | cut -c17-33 | sed 's/[^a-zA-Z0-9]//g'`
 	if [ ${#RFS_SEC} -ne 16 ]; then
 	        continue
 	fi
+	if [ ${#SSH_PAS} -ne 16 ]; then
+	        continue
+	fi
 
-	echo "`date` New user rfs-${RFS_SEC}"
+	echo "`date` New user rfs-${RFS_SEC} / ${SSH_PAS}"
 	RFS_DIR="${ROOT_DIR}/data/dir-rfs-${RFS_SEC}"
-	useradd rfs-${RFS_SEC} -NM -d /home/rfs-init -g rfsusergroup -s /usr/sbin/nologin
-
+	useradd "rfs-${RFS_SEC}" -NM -d /home/rfs-init -g rfsusergroup -s /usr/sbin/nologin
+	echo -e "${SSH_PAS}\n${SSH_PAS}" | passwd -q "rfs-${RFS_SEC}" 2>/dev/null
 	# useradd does not follow symb links so we have to it manually
 	tail -n1 /etc/passwd >>"${ROOT_DIR}/passwd"
 	tail -n1 /etc/shadow >>"${ROOT_DIR}/shadow"
