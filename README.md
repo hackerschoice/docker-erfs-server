@@ -16,7 +16,7 @@ $ docker build -t thc-rfs-server github.com/hackerschoice/docker-thc-rfs-server
 Running the server:
 ```
 $ mkdir -p ~/thc-rfs
-$ docker run -it -p 2222:22 --log-drive=none -v ~/thc-rfs:/mnt/rfs thc-rfs-server
+$ docker run -it -p 2222:22 --log-driver=none -v ~/thc-rfs:/mnt/rfs thc-rfs-server
 ```
 
 ---
