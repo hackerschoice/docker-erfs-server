@@ -29,8 +29,9 @@ while :; do
 	tail -n1 /etc/passwd >>"${ROOT_DIR}/passwd"
 	tail -n1 /etc/shadow >>"${ROOT_DIR}/shadow"
 
-	umask 077
+	umask 066
 	mkdir "${RFS_DIR}"
+	umask 077
 	mkdir "${RFS_DIR}/rw"
 	mkdir "${RFS_DIR}/rw/encrypted"
 	chown -R "rfs-${RFS_SEC}" "${RFS_DIR}/rw"
