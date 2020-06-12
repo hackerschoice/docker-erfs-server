@@ -24,6 +24,8 @@ groupadd rfsusergroup
 
 echo "AcceptEnv THC_RFS_SECRET" >>/etc/ssh/sshd_config
 echo "AcceptEnv THC_SSH_PASSWORD" >>/etc/ssh/sshd_config
+echo "AcceptEnv THC_RFS_VERSION" >>/etc/ssh/sshd_config
+echo "AcceptEnv THC_RFS_TOKEN" >>/etc/ssh/sshd_config
 echo "
 AllowTcpForwarding no
 X11Forwarding no
